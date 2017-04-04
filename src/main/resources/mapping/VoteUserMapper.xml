@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vote.dao.VoteUserMapper" >
+  <resultMap id="BaseResultMap" type="com.vote.dao.model.VoteUser" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="interested" property="interested" jdbcType="VARCHAR" />
+    <result column="wxnickname" property="wxnickname" jdbcType="VARCHAR" />
+    <result column="openid" property="openid" jdbcType="VARCHAR" />
+    <result column="headurl" property="headurl" jdbcType="VARCHAR" />
+    <result column="gender" property="gender" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="BIGINT" />
+    <result column="leasttime" property="leasttime" jdbcType="BIGINT" />
+    <result column="token" property="token" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, username, password, interested, wxnickname, openid, headurl, gender, create_time, 
+    leasttime,token
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from vote_user
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from vote_user
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.vote.dao.model.VoteUser" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into vote_user (username, password, interested, 
+      wxnickname, openid, headurl, 
+      gender, create_time, leasttime
+      )
+    values (#{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{interested,jdbcType=VARCHAR}, 
+      #{wxnickname,jdbcType=VARCHAR}, #{openid,jdbcType=VARCHAR}, #{headurl,jdbcType=VARCHAR}, 
+      #{gender,jdbcType=VARCHAR}, #{createTime,jdbcType=BIGINT}, #{leasttime,jdbcType=BIGINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.vote.dao.model.VoteUser" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into vote_user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="username != null" >
+        username,
+      </if>
+      <if test="password != null" >
+        password,
+      </if>
+      <if test="interested != null" >
+        interested,
+      </if>
+      <if test="wxnickname != null" >
+        wxnickname,
+      </if>
+      <if test="openid != null" >
+        openid,
+      </if>
+      <if test="headurl != null" >
+        headurl,
+      </if>
+      <if test="gender != null" >
+        gender,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="leasttime != null" >
+        leasttime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="username != null" >
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="interested != null" >
+        #{interested,jdbcType=VARCHAR},
+      </if>
+      <if test="wxnickname != null" >
+        #{wxnickname,jdbcType=VARCHAR},
+      </if>
+      <if test="openid != null" >
+        #{openid,jdbcType=VARCHAR},
+      </if>
+      <if test="headurl != null" >
+        #{headurl,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null" >
+        #{gender,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="leasttime != null" >
+        #{leasttime,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+
+  <select id="selectCountByUsername" resultType="java.lang.Integer">
+    SELECT
+    COUNT(*)
+    from vote_user
+    where username = #{username}
+  </select>
+
+  <select id="selectByUsername" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM vote_user
+    where username = #{username}
+  </select>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.vote.dao.model.VoteUser" >
+    update vote_user
+    <set >
+      <if test="username != null" >
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="interested != null" >
+        interested = #{interested,jdbcType=VARCHAR},
+      </if>
+      <if test="wxnickname != null" >
+        wxnickname = #{wxnickname,jdbcType=VARCHAR},
+      </if>
+      <if test="openid != null" >
+        openid = #{openid,jdbcType=VARCHAR},
+      </if>
+      <if test="headurl != null" >
+        headurl = #{headurl,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null" >
+        gender = #{gender,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="leasttime != null" >
+        leasttime = #{leasttime,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.vote.dao.model.VoteUser" >
+    update vote_user
+    set username = #{username,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      interested = #{interested,jdbcType=VARCHAR},
+      wxnickname = #{wxnickname,jdbcType=VARCHAR},
+      openid = #{openid,jdbcType=VARCHAR},
+      headurl = #{headurl,jdbcType=VARCHAR},
+      gender = #{gender,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=BIGINT},
+      leasttime = #{leasttime,jdbcType=BIGINT},
+      token = #{token,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
