@@ -25,14 +25,15 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
-        HttpSession session = request.getSession();
+        //HttpSession session = request.getSession();
         //String token =request.getParameter("token");
         String token =request.getHeader("Authorization");
         //String token="ERR15zAv0B1PA64RfD9BTA==";
         if(token!=null){
             String id= EncryptUtil.aesDecrypt(token,EncryptUtil.KEY);
-            Integer i = new Integer(id);
-            VoteUser voteUser=voteUserMapper.selectByPrimaryKey(i.intValue());
+
+            VoteUser voteUser=voteUserMapper.selectByPrimaryKey(Integer.valueOf(id));
+
             //String token1 = (String) session.getAttribute(id);
             String token1 = voteUser.getToken();
             if(token.equals(token1)){

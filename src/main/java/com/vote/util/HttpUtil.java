@@ -111,7 +111,7 @@ public class HttpUtil {
     }
 
     public static boolean isIE(HttpServletRequest request){
-        String userAgent = request.getHeader("User-Agent");
+//        String userAgent = request.getHeader("User-Agent");
         return request.getHeader("User-Agent").toUpperCase().indexOf("MSIE")>0;
     }
 
