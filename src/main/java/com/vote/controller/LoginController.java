@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
@@ -31,7 +32,7 @@ public class LoginController extends BaseController{
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     @ResponseBody
     @ApiOperation(value = "注册用户", httpMethod = "POST", response = ResultBean.class, notes = "注册用户")
-    public ResultBean doRegister(HttpServletRequest request,
+    public ResultBean doRegister(HttpServletRequest request,HttpServletResponse response,
                                  @ApiParam(required = true, name = "username", value = "用户名") @RequestParam  String username,
                                  @ApiParam(required = true, name = "password", value = "密码") @RequestParam  String password) {
         String errorReport = loginService.doRegister(username,password,request);
@@ -41,6 +42,7 @@ public class LoginController extends BaseController{
             //loginService.doLogin(username, password, request);
             return new ResultBean(true,null, "注册成功",null);
         } else {
+            response.setStatus(response.SC_FORBIDDEN);
             return new ResultBean(false,null, errorReport,null);
         }
     }
@@ -55,28 +57,22 @@ public class LoginController extends BaseController{
     @RequestMapping(value = "/login",method = RequestMethod.POST)
     @ResponseBody
     @ApiOperation(value = "账号登录", httpMethod = "POST", response = ResultBean.class, notes = "账号登录")
-    public ResultBean login(HttpServletRequest request,
+    public ResultBean login(HttpServletRequest request,HttpServletResponse response,
                             @ApiParam(required = true, name = "username", value = "用户名") @RequestParam String username,
                             @ApiParam(required = true, name = "password", value = "密码") @RequestParam String password ) {
 
-        //执行登录
-        VoteUser voteUser=voteUserMapper.selectByUsername(username);
+        String errorReport = loginService.doLogin(username,password,request);
 
-        String errorReport=null;
-        if (voteUser == null) {
-            errorReport= "用户名不存在";
-        }
-
-        if (password == null || password.length() == 0) {
-            errorReport= "请输入密码";
-        }
-        if (!voteUser.getPassword().equals(MD5Util.doImaoMd5(voteUser.getUsername(), password))) {
-            errorReport= "账号或密码错误";
+        if (errorReport != null) {
+            response.setStatus(response.SC_FORBIDDEN);
+            return new ResultBean(false, null, errorReport,null);
         }
         String token=null;
+        VoteUser voteUser=voteUserMapper.selectByUsername(username);
         try {
             token=EncryptUtil.aesEncrypt(voteUser.getId().toString(), EncryptUtil.KEY);
         } catch (Exception e) {
+            response.setStatus(response.SC_FORBIDDEN);
             return new ResultBean(false, token, "发生错误",null);
         }
   /*      HttpSession session = request.getSession(true);
@@ -86,12 +82,8 @@ public class LoginController extends BaseController{
         voteUser.setLeasttime(TimeUtil.getTimeStamp());
         voteUserMapper.updateByPrimaryKey(voteUser);
 
-        if (errorReport != null) {
-            return new ResultBean(false, null, errorReport,null);
-        } else {
-            voteLogger.warn("用户【" + username + "】IP【" + HttpUtil.getIpAddr(request) + "】登录了");
-            return new ResultBean(true, token, "登录成功",voteUser);
-        }
+        voteLogger.warn("用户【" + username + "】IP【" + HttpUtil.getIpAddr(request) + "】登录了");
+        return new ResultBean(true, token, "登录成功",voteUser);
     }
 
 }

@@ -103,8 +103,8 @@ public class VoteServiceImpl extends BaseServiceImpl implements VoteService {
 
     public String join(Integer user_id, Integer event_id, String option) {
 
-        if(user_id==null ||event_id==null||option==null){
-            return "投票失败";
+        if(user_id==null ||event_id==null||option==null||"undefined".equals(option)){
+            return "缺少参数";
         }
         List<VoteJoin> voteJoins1=voteJoinMapper.selectByIdAndTypeAndEventId(user_id, event_id, 0);
         if(voteJoins1.size()>0){
