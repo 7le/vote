@@ -36,7 +36,7 @@ public class LoginServiceImpl extends BaseServiceImpl implements LoginService {
         voteUser.setUsername(username);
         voteUser.setPassword(MD5Util.doImaoMd5(username, password));
         voteUser.setCreateTime(TimeUtil.getTimeStamp());
-        voteUser.setInterested(null);
+        voteUser.setInterested("1,2"); //默认给与2个兴趣爱好
         //执行持久化
         voteUserMapper.insert(voteUser);
 
