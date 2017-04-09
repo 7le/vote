@@ -93,7 +93,7 @@ public class VoteController extends BaseController {
             response.setStatus(response.SC_FORBIDDEN);
             return new ResultBean(false,(String)request.getAttribute("token"), "token无效", null);
         }
-        if(voteEventMapper.selectByPrimaryKey(event_id).getEndTime()==1){
+        if(voteEventMapper.selectByPrimaryKey(event_id).getEndTime().equals(0)){
             response.setStatus(response.SC_FORBIDDEN);
             return new ResultBean(false,(String)request.getAttribute("token"), "投票已经结束", null);
         }
