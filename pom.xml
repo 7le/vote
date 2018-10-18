@@ -10,7 +10,7 @@
 
     <!-- 属性设置 -->
     <properties>
-        <springframework.version>4.0.5.RELEASE</springframework.version>
+        <springframework.version>4.3.18.RELEASE</springframework.version>
     </properties>
 
 
