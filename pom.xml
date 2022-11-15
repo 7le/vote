@@ -11,7 +11,7 @@
     <!-- 属性设置 -->
     <properties>
         <springframework.version>4.3.18.RELEASE</springframework.version>
-        <jackson.version>2.10.1</jackson.version>
+        <jackson.version>2.12.7.1</jackson.version>
     </properties>
 
 
