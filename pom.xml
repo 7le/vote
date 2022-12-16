@@ -10,7 +10,7 @@
 
     <!-- 属性设置 -->
     <properties>
-        <springframework.version>4.3.18.RELEASE</springframework.version>
+        <springframework.version>5.2.20.RELEASE</springframework.version>
         <jackson.version>2.10.1</jackson.version>
     </properties>
 
